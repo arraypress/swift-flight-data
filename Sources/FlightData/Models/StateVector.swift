@@ -31,7 +31,9 @@ public struct StateVector: Sendable, Codable, Equatable, Identifiable {
     public let originCountry: String
     /// When the position was last updated.
     public let lastUpdate: Date?
+    /// Degrees east. Absent when the aircraft is not reporting a position.
     public let longitude: Double?
+    /// Degrees north. Absent when the aircraft is not reporting a position.
     public let latitude: Double?
     /// Barometric altitude, metres.
     public let altitude: Double?

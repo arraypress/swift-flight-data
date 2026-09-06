@@ -9,9 +9,13 @@ import Foundation
 
 /// A latitude/longitude box to search within.
 public struct BoundingBox: Sendable, Equatable {
+    /// Southern edge, degrees.
     public let minimumLatitude: Double
+    /// Western edge, degrees.
     public let minimumLongitude: Double
+    /// Northern edge, degrees.
     public let maximumLatitude: Double
+    /// Eastern edge, degrees.
     public let maximumLongitude: Double
 
     /// A box, validated.
@@ -57,6 +61,7 @@ public struct BoundingBox: Sendable, Equatable {
     /// A few boxes worth having by name.
     public static var london: BoundingBox { try! BoundingBox(minimumLatitude: 51.2, minimumLongitude: -0.6,
                                                              maximumLatitude: 51.8, maximumLongitude: 0.4) }
+    /// A box around New York, for a quick call.
     public static var newYork: BoundingBox { try! BoundingBox(minimumLatitude: 40.4, minimumLongitude: -74.3,
                                                               maximumLatitude: 41.0, maximumLongitude: -73.6) }
 

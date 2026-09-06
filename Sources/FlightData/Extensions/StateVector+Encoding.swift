@@ -17,6 +17,7 @@ extension StateVector {
         case velocity, speedKnots, heading, verticalRate, squawk, isClimbing
     }
 
+    /// Writes the named shape, not the positional array OpenSky sends.
     public func encode(to encoder: Encoder) throws {
         var container = encoder.container(keyedBy: OutputKeys.self)
         try container.encode(id, forKey: .id)

@@ -24,6 +24,8 @@
 //  It will tell you the aircraft is still on the ground in Frankfurt.
 //
 
+//
+
 import Foundation
 
 /// A keyless client for live aircraft positions.
@@ -32,9 +34,12 @@ public struct FlightData: Sendable {
     /// How requests are performed — injectable so tests run on recordings.
     public typealias Transport = @Sendable (URLRequest) async throws -> (Data, HTTPURLResponse)
 
+    /// Sent on every request, so OpenSky can see who is calling.
     public static let defaultUserAgent = "swift-flight-data/0.1 (+https://github.com/arraypress/swift-flight-data)"
+    /// The API host. Overridable so tests can point somewhere else.
     public static let defaultHost = "opensky-network.org"
 
+    /// Sent on every request made by this client.
     public let userAgent: String
     private let host: String
     private let transport: Transport
@@ -158,38 +163,5 @@ public struct FlightData: Sendable {
         } catch {
             throw FlightError.malformed(error.localizedDescription)
         }
-    }
-}
-
-/// One completed flight leg, from the historical endpoints.
-public struct Flight: Sendable, Codable, Equatable {
-    public let icao24: String
-    public let callsign: String?
-    /// ICAO code of the departure airport, when it could be estimated.
-    public let departureAirport: String?
-    /// ICAO code of the arrival airport, likewise.
-    public let arrivalAirport: String?
-    public let firstSeen: Date?
-    public let lastSeen: Date?
-
-    private enum CodingKeys: String, CodingKey {
-        case icao24, callsign
-        case departureAirport = "estDepartureAirport"
-        case arrivalAirport = "estArrivalAirport"
-        case firstSeen, lastSeen
-    }
-
-    public init(from decoder: Decoder) throws {
-        let container = try decoder.container(keyedBy: CodingKeys.self)
-        self.icao24 = (try? container.decode(String.self, forKey: .icao24)) ?? ""
-        let raw = ((try? container.decodeIfPresent(String.self, forKey: .callsign)) ?? nil)?
-            .trimmingCharacters(in: .whitespaces)
-        self.callsign = (raw?.isEmpty ?? true) ? nil : raw
-        self.departureAirport = ((try? container.decodeIfPresent(String.self, forKey: .departureAirport)) ?? nil)
-        self.arrivalAirport = ((try? container.decodeIfPresent(String.self, forKey: .arrivalAirport)) ?? nil)
-        self.firstSeen = ((try? container.decodeIfPresent(Int.self, forKey: .firstSeen)) ?? nil)
-            .map { Date(timeIntervalSince1970: TimeInterval($0)) }
-        self.lastSeen = ((try? container.decodeIfPresent(Int.self, forKey: .lastSeen)) ?? nil)
-            .map { Date(timeIntervalSince1970: TimeInterval($0)) }
     }
 }

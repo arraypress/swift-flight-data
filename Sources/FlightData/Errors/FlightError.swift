@@ -20,6 +20,7 @@ public enum FlightError: Error, LocalizedError, Sendable, Equatable {
     /// A bounding box that is not a box.
     case badBoundingBox(String)
 
+    /// A one-line reason, for a CLI or a log.
     public var errorDescription: String? {
         switch self {
         case .http(let code): return "OpenSky answered HTTP \(code)"
