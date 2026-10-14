@@ -17,7 +17,7 @@ try await flights.near(latitude: 51.47, longitude: -0.45)
 OpenSky's receiver network publishes what transponders are broadcasting. That
 makes the honest scope narrower than "flight status":
 
-| | |
+| Access | What you get |
 |---|---|
 | **Keyless** | position, altitude, ground speed, heading, climb rate, callsign, squawk, whether it is on the ground |
 | **Needs credentials** | historical arrivals and departures by airport — closed to anonymous callers in 2025 |
